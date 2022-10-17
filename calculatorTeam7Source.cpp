@@ -9,6 +9,7 @@ enum Operation {
     Division,
     Mod,
     Exp = 100,
+    UnaryPlus,
 };
 
 int sum(const int&, const int&);
@@ -16,6 +17,7 @@ int sub(const int&, const int&);
 int mult(const int&, const int&);
 int division(const int&, const int&);
 int mod(const int&, const int&);
+int unaryPlus(const int&);
 
 double sum(const double&, const double&);
 double sub(const double&, const double&);
@@ -24,6 +26,7 @@ double division(const double&, const double&);
 bool isUnary(Operation);
 double applyUnaryOperation(Operation, double x);
 double applyBinaryOperation(Operation, double a, double b);
+double unaryPlus(const double&);
 void printResult(double);
 void askForNumber(const string&, int&);
 void askForNumber(const string&, double&);
@@ -37,21 +40,21 @@ int main() {
     Operation operation;
 
     while (true) {
-        std::cout << "type?";
+        std::cout << "type? ";
         std::cin >> varType;
         if (varType == "double") {
             operation = askForOperation();
             double result;
             if (isUnary(operation)) {
                 double x;
-                askForNumber("Input the number", x);
+                askForNumber("Input the number ", x);
                 result = applyUnaryOperation(operation, x);
             }
             else {
                 double a;
-                askForNumber("Input the 1st number", a);
+                askForNumber("Input the 1st number ", a);
                 double b;
-                askForNumber("Input the 2nd number", b);
+                askForNumber("Input the 2nd number ", b);
                 result = applyBinaryOperation(operation, a, b);
             }
             printResult(result);
@@ -76,6 +79,9 @@ int division(const int& a, const int& b) {
 int mod(const int& a, const int& b) {
     return a % b;
 }
+int unaryPlus(const int& a){
+    return a + 1;
+}
 
 // double arguements 
 double sum(const double& a, const double& b) {
@@ -90,8 +96,11 @@ double mult(const double& a, const double& b) {
 double division(const double& a, const double& b) {
     return a / b;
 }
+double unaryPlus(const double& a) {
+    return a + 1;
+}
 Operation askForOperation() {
-    std::string menu = "Sum - 0, \nSub - 1, \nMult - 2,\nDivision - 3,\nMod - 4, \nExp - 5,\n ";
+    std::string menu = "Sum - 0, \nSub - 1, \nMult - 2,\nDivision - 3,\nMod - 4, \nExp - 5,\nUnaryPlus = 101 ";
 
     int numberOfOperation;
 
@@ -105,10 +114,17 @@ Operation askForOperation() {
 bool isUnary(Operation operation) {
     return operation > 99 ? true : false;
 };
-double applyUnaryOperation(Operation, double x) {
-    //TODO 
-
-    return 0;
+double applyUnaryOperation(Operation operation, double x) {
+    double result;
+    switch (operation)
+    {
+    case UnaryPlus:
+        result = unaryPlus(x);
+        break;
+    default:
+        break;
+    }
+    return result;
 };
 double applyBinaryOperation(Operation operation, double a, double b) {
 
@@ -124,10 +140,10 @@ double applyBinaryOperation(Operation operation, double a, double b) {
         break;
     default: break;
     }
-    return 0;
+    return result;
 };
 void printResult(double r) {
-    std::cout << r;
+    std::cout << r << std::endl;
 };
 void askForNumber(const string& label, int& arg) {
     std::cout << label;
