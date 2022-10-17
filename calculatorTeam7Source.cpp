@@ -1,5 +1,6 @@
-#include <iostream> 
-#include <string> 
+#include <iostream>
+#include <string>
+#include <cassert>
 using std::string;
 
 enum Operation {
@@ -27,15 +28,22 @@ bool isUnary(Operation);
 double applyUnaryOperation(Operation, double x);
 double applyBinaryOperation(Operation, double a, double b);
 double unaryPlus(const double&);
+
 void printResult(double);
 void askForNumber(const string&, int&);
 void askForNumber(const string&, double&);
 // —читаем, что бинарные - 0 - 99, унарные - 100+ 
 
+void testSum();
+void testMult();
+void testSub();
 
 Operation askForOperation();
 
 int main() {
+    testSum();
+    testMult();
+    testSub();
     std::string varType;
     Operation operation;
 
@@ -152,4 +160,34 @@ void askForNumber(const string& label, int& arg) {
 void askForNumber(const string& label, double& arg) {
     std::cout << label;
     std::cin >> arg;
+}
+
+void testSum() {
+    assert (sum(0, 0) == 0);
+    assert (sum(2, 4) == 6);
+    assert (sum(-6, -9) == -15);
+    assert (sum(-6, 7) == 1);
+    assert (sum(0, 7) == 7);
+    assert (sum(0, -9) == -9);
+    assert (sum(-1, 5) == 4);
+    assert (sum(1, 2) == 3);
+    assert (sum(0.3, 0.7) == 1.0);
+}
+void testMult() {
+    assert(mult(0, 7) == 0);
+    assert(mult(2, 3) == 6);
+    assert(mult(-6, 4) == -24);
+    assert(mult(-2, -3) == 6);
+    assert(mult(-1, 7) == -7);
+    assert(mult(1, 3) == 3);
+    assert(mult(1.2, 1.3) == 1.56);
+    
+}
+void testSub() {
+    assert(sub(0, 3) == -3);
+    assert(sub(1, 3) == -2);
+    assert(sub(-2, 3) == -5);
+    assert(sub(7, 4) == -3);
+    assert(sub(-1, -3) == 2);
+    assert(sub(-5, -2) == -3);
 }
