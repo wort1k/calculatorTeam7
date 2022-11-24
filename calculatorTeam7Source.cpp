@@ -1,114 +1,100 @@
+#include "calculatorTeam7.h"
 #include <iostream>
 #include <string>
 #include <cassert>
-using std::string;
 
-enum Operation {
-    Sum,
-    Sub,
-    Mult,
-    Division,
-    Mod,
-    Exp = 100,
-    UnaryPlus,
-};
 
-int sum(const int&, const int&);
-int sub(const int&, const int&);
-int mult(const int&, const int&);
-int division(const int&, const int&);
-int mod(const int&, const int&);
-int unaryPlus(const int&);
-
-double sum(const double&, const double&);
-double sub(const double&, const double&);
-double mult(const double&, const double&);
-double division(const double&, const double&);
-bool isUnary(Operation);
-double applyUnaryOperation(Operation, double x);
-double applyBinaryOperation(Operation, double a, double b);
-double unaryPlus(const double&);
-
-void printResult(double);
-void askForNumber(const string&, int&);
-void askForNumber(const string&, double&);
-// Считаем, что бинарные - 0 - 99, унарные - 100+ 
-
-void testSum();
-void testMult();
-void testSub();
-
-Operation askForOperation();
-
-int main() {
-    testSum();
-    testMult();
-    testSub();
-    std::string varType;
-    Operation operation;
-
-    while (true) {
-        std::cout << "type? ";
-        std::cin >> varType;
-        if (varType == "double") {
-            operation = askForOperation();
-            double result;
-            if (isUnary(operation)) {
-                double x;
-                askForNumber("Input the number ", x);
-                result = applyUnaryOperation(operation, x);
-            }
-            else {
-                double a;
-                askForNumber("Input the 1st number ", a);
-                double b;
-                askForNumber("Input the 2nd number ", b);
-                result = applyBinaryOperation(operation, a, b);
-            }
-            printResult(result);
-        }
-
-    }
-
-    return 0;
-}
 int sum(const int& a, const int& b) {
     return a + b;
 }
+
 int sub(const int& a, const int& b) {
     return a - b;
 }
+
 int mult(const int& a, const int& b) {
     return a * b;
 }
+
 int division(const int& a, const int& b) {
     return a / b;
 }
+
 int mod(const int& a, const int& b) {
     return a % b;
 }
+
 int unaryPlus(const int& a){
     return a + 1;
+}
+
+int unaryMinus(const int& a) {
+    return a - 1;
+}
+
+int bitwiseAnd(const int& a, const int& b) {
+    return a & b;
+}
+
+int bitwiseExclusiveOr(const int& a, const int& b) {
+    return a ^ b;
+}
+
+int rightShift(const int& a, const int& b) {
+    return a >> b;
+}
+
+int bitwiseDisjunctionNegation(const int& a, const int& b) {
+    return ~(a | b); //TODO
 }
 
 // double arguements 
 double sum(const double& a, const double& b) {
     return a + b;
 }
+
 double sub(const double& a, const double& b) {
     return a - b;
 }
+
 double mult(const double& a, const double& b) {
     return a * b;
 }
+
 double division(const double& a, const double& b) {
     return a / b;
 }
+
 double unaryPlus(const double& a) {
     return a + 1;
 }
+
+double unaryMinus(const double& a) {
+    return a - 1;
+}
+
+double CalcSqrt(const double& a) {
+    return sqrtf(a);
+}
+
+// bool arguements
+bool conjunction(const bool& a, const bool& b) {
+    return  a && b;
+}
+
+bool exclusiveOr(const bool& a, const bool& b) {
+    return a ^ b;
+}
+
+bool disjunctionNegation(const bool& a, const bool& b) {
+    return !(a || b);
+}
+
 Operation askForOperation() {
-    std::string menu = "Sum - 0, \nSub - 1, \nMult - 2,\nDivision - 3,\nMod - 4, \nExp - 5,\nUnaryPlus = 101 ";
+    std::string menu = "Sum - 0, \nSub - 1, \nMult - 2,\nDivision - 3,\nMod - 4, \nBitwiseAnd - 5,";
+    menu += " \nBitwiseExclusiveOr - 6, \nBitwiseDisjunctionNegation - 7, \nRightShift - 8, \nConjunction - 9, \nExclusiveOr - 10,";
+    menu += " \nDisjunctionNegation - 11";
+    menu += " \nExp - 100, \n\nUnaryPlus - 101, \nUnaryMinus - 102, \nSqrt - 103, \n";
 
     int numberOfOperation;
 
@@ -121,19 +107,26 @@ Operation askForOperation() {
 }
 bool isUnary(Operation operation) {
     return operation > 99 ? true : false;
-};
+}
+
 double applyUnaryOperation(Operation operation, double x) {
     double result;
     switch (operation)
     {
-    case UnaryPlus:
-        result = unaryPlus(x);
+    case Exp:
+        break;
+    case UnaryPlus: result = unaryPlus(x);
+        break;
+    case UnaryMinus: result = unaryMinus(x);
+        break;
+    case Sqrt: result = CalcSqrt(x);
         break;
     default:
         break;
     }
     return result;
-};
+}
+
 double applyBinaryOperation(Operation operation, double a, double b) {
 
     double result;
@@ -146,17 +139,49 @@ double applyBinaryOperation(Operation operation, double a, double b) {
         break;
     case Division: result = division(a, b);
         break;
-    default: break;
+    case Mod: result = mod(a, b);
+        break;
+    case BitwiseAnd: result = bitwiseAnd(a, b);
+        break;
+    case BitwiseExclusiveOr: result = bitwiseExclusiveOr(a, b);
+        break;
+    case BitwiseDisjunctionNegation: result = bitwiseDisjunctionNegation(a, b);
+        break;
+    case RightShift: result = rightShift(a, b);
+        break;
+    case Сonjunction: result = conjunction(a, b);
+        break;
+    case ExclusiveOr: result = exclusiveOr(a, b);
+        break;
+    case DisjunctionNegation: result = disjunctionNegation(a, b);
+        break;
+    default:
+        break;
     }
     return result;
-};
+}
+
 void printResult(double r) {
     std::cout << r << std::endl;
-};
+}
+
+void printResult(int r) {
+    std::cout << r << std::endl;
+}
+
+void printResult(bool r) {
+    if (r) {
+        std::cout << "true" << std::endl;
+    } else {
+        std::cout << "false" << std::endl;
+    }
+}
+
 void askForNumber(const string& label, int& arg) {
     std::cout << label;
     std::cin >> arg;
 }
+
 void askForNumber(const string& label, double& arg) {
     std::cout << label;
     std::cin >> arg;
@@ -173,6 +198,7 @@ void testSum() {
     assert (sum(1, 2) == 3);
     assert (sum(0.3, 0.7) == 1.0);
 }
+
 void testMult() {
     assert(mult(0, 7) == 0);
     assert(mult(2, 3) == 6);
@@ -183,11 +209,12 @@ void testMult() {
     assert(mult(1.2, 1.3) == 1.56);
     
 }
+
 void testSub() {
     assert(sub(0, 3) == -3);
     assert(sub(1, 3) == -2);
     assert(sub(-2, 3) == -5);
-    assert(sub(7, 4) == -3);
+    assert(sub(7, 4) == 3);
     assert(sub(-1, -3) == 2);
     assert(sub(-5, -2) == -3);
 }
